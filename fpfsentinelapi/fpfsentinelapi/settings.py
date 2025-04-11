@@ -27,7 +27,6 @@ SECRET_KEY = 'django-insecure-=*(01@%b-a@*rwx)%ztvne720=u(&ci=u-_i*ugi#zi*l22ui!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Application definition
@@ -48,6 +47,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
 
     'corsheaders.middleware.CorsMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',  // desabilitado para testes
 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -135,10 +135,45 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:4200',  # Angular
+    "http://localhost:8000",  # Django
+    "http://127.0.0.1:8000",  # Django
+]
+
+CORS_ALLOW_CREDENTIALS = True  # Permite credenciais
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+] # Métodos permitidos
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:4200",
+]  # Libera CSRF para essa URL
+
+CORS_ALLOW_HEADERS = [
+    'Authorization',
+    'content-type',
+    'accept',
+    'origin',
+    'x-csrftoken',
+    'x-requested-with',
+    'x-www-form-urlencoded',
+] # Headers permitidos
+
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
 }
 
 SIMPLE_JWT = {
