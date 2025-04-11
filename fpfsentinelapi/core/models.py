@@ -22,7 +22,7 @@ class PersonType(models.TextChoices):
 class Person(AbstractUser):
     name = models.CharField(max_length=200, db_column='name', null=False, verbose_name='Nome')
     person_type = models.CharField(max_length=20, db_column='person_type', choices=PersonType.choices, default=PersonType.COLABORATOR)
-    photo = models.CharField(upload_to='photos', db_column='photo', null=True)
+    photo = models.CharField(db_column='photo', null=True)
     document = models.CharField(max_length=20, db_column='document', null=True, verbose_name='Documento') #Adicionado novamente
 
     def __str__(self):
