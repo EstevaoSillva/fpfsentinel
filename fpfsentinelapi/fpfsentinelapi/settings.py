@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'core',
+    'minio_storage',
 ]
 
 MIDDLEWARE = [
@@ -135,7 +136,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'core.Person'
+AUTH_USER_MODEL = 'core.GuardPost'  # Define o modelo de usuário padrão para GuardPost
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200',  # Angular
@@ -172,6 +173,8 @@ CORS_ALLOW_HEADERS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -184,3 +187,22 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,  # Gera novos tokens ao usar refresh
     'BLACKLIST_AFTER_ROTATION': True,  # Blacklist para tokens antigos
 }
+
+
+# # Configurações do MinIO
+# MINIO_STORAGE_ENDPOINT = 'seu_endpoint_minio:9000' # Ex: 'minio.exemplo.com:9000'
+# MINIO_STORAGE_ACCESS_KEY = 'sua_chave_acesso'
+# MINIO_STORAGE_SECRET_KEY = 'sua_chave_secreta'
+# MINIO_STORAGE_USE_HTTPS = False  # Ou True, dependendo da sua configuração
+# MINIO_STORAGE_MEDIA_BUCKET_NAME = 'media'  # Nome do bucket para arquivos de mídia
+# MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET = True  # Cria o bucket automaticamente
+# MINIO_STORAGE_STATIC_BUCKET_NAME = 'static'  # Nome do bucket para arquivos estáticos
+# MINIO_STORAGE_AUTO_CREATE_STATIC_BUCKET = True  # Cria o bucket automaticamente
+
+# Configurações de armazenamento de arquivos
+# DEFAULT_FILE_STORAGE = 'minio_storage.storage.MinioMediaStorage'
+# STATICFILES_STORAGE = 'minio_storage.storage.MinioStaticStorage'
+
+# # URL base para arquivos de mídia e estáticos
+# MEDIA_URL = f"https://{MINIO_STORAGE_ENDPOINT}/{MINIO_STORAGE_MEDIA_BUCKET_NAME}/"
+# STATIC_URL = f"https://{MINIO_STORAGE_ENDPOINT}/{MINIO_STORAGE_STATIC_BUCKET_NAME}/"
